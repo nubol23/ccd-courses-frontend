@@ -1,0 +1,28 @@
+.cover-img {
+  /*  height: 280px;*/
+  padding: 15px;
+  /*min-height: 280px;*/
+  /*min-width: 280px;*/
+  max-height: 280px;
+  max-width: 280px;
+}
+
+.card {
+  display: inline-block;
+  overflow: visible;
+}
+
+.card-action {
+  cursor: pointer;
+  color: #ffab40!important;
+  margin-right: 24px!important;
+  transition: color .3s ease!important;
+  text-transform: uppercase;
+}
+
+.card-action:hover { color: #ffd180!important; }
+
+/*.text-center {*/
+/*  text-align: center;*/
+/*}*/
+

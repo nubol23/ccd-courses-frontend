@@ -1,0 +1,22 @@
+<div class="card animate__animated animate__fadeIn animate__faster">
+  <div class="card-image">
+    <img class="cover-img" [src]="course.coverUrl" [alt]="course.title">
+  </div>
+  <div class="card-content">
+    <div class="row">
+      <button (click)="editCard()" routerLink="/cursos" class="btn light-blue lighten-2 left">
+        <i class="far fa-edit"></i>
+      </button>
+      <button (click)="deleteCard()" routerLink="/cursos" class="btn red lighten-2 right">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <span class="card-title">{{course.title}}</span>
+<!--    <p style="white-space: pre-wrap">{{course.description}}</p>-->
+    <p style="white-space: pre-wrap">{{ (course.description.length>20)? (course.description | slice:0:6)+'..':(course.description) }}</p>
+  </div>
+  <div (click)="redirectCard()" class="card-action">
+    Acceder al curso
+  </div>
+</div>

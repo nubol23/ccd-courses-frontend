@@ -1,0 +1,58 @@
+<!--<h3>{{section.sectionName}}</h3>-->
+
+<div class="row center" *ngIf="section.videoId">
+  <youtube-player
+    [videoId]="section.videoId"
+    suggestedQuality="highres">
+  </youtube-player>
+</div>
+
+<div class="row left-align" *ngIf="!section.videoId && section.liveUrl">
+  <a href="#" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+    Livestream
+    <i class="fas fa-play left"></i>
+  </a>
+</div>
+
+<div class="row right-align" style="margin-bottom: 20px">
+    <button *ngIf="editable" (click)="saveEdit()" class="btn green darken-1">
+      <i class="fas fa-check"></i>
+    </button>
+
+    <button *ngIf="!editable" (click)="startEdit()" class="btn light-blue lighten-2">
+      <i class="far fa-edit"></i>
+    </button>
+</div>
+
+<div class="row center">
+
+  <div *ngIf="editable" class="input-field col s12">
+    <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="variable-textarea"></textarea>
+  </div>
+
+  <div *ngIf="!editable && section.sectionExplanation !== ''">
+    <div class="card">
+      <div class="card-content left-align">
+        <div *ngIf="!editable && section.sectionExplanation !== ''">
+          <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
+          </markdown>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row right-align">
+  <span class="btn btn-file light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+<!--    <i class="material-icons left">cloud_upload</i>-->
+    <i class="fas fa-code"></i>
+    Subir
+    <input type="file" (change)="uploadProgrammingAssignment($event)">
+  </span>
+</div>
+
+<!--<iframe src="https://firebasestorage.googleapis.com/v0/b/chat-da9a1.appspot.com/o/htmls%2Ffile.html?alt=media&token=5f019407-5929-4947-9b6b-1cb2be0f383c"-->
+<!--        width="100%"-->
+<!--        height="500px"-->
+<!--        style="overflow: hidden; border: none"></iframe>-->

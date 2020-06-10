@@ -1,0 +1,17 @@
+<app-sidenav [courseName]="courseName" [sections]="sections" (ngSectionToLoad)="loadSection($event)"></app-sidenav>
+
+<div class="row">
+  <div class="col right">
+    <br><br>
+    <button (click)="addSection()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+      Agregar sección
+      <i class="fa fa-plus left"></i>
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <br><br>
+  <app-course-section [section]="sections[currentSectionIdx]"
+                      [course]="getCourse()"></app-course-section>
+</div>

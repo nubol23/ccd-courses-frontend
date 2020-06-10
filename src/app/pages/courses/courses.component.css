@@ -1,0 +1,63 @@
+.btn {
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: Roboto, sans-serif;
+}
+
+.mobile-fab-tip {
+  position: fixed;
+  right: 85px;
+  padding:0px 0.5rem;
+  text-align: right;
+  background-color: #323232;
+  border-radius: 2px;
+  color: #FFF;
+  width:auto;
+}
+
+.custom-btn {
+  border-radius: 2px;
+  padding:0px 0.5rem;
+  width:auto;
+  text-align: right;
+}
+
+/*.card {*/
+/*  min-width: 280px;*/
+/*}*/
+
+/*.cover-img {*/
+/*  padding: 15px;*/
+/*}*/
+
+.cards-container {
+  column-break-inside: avoid;
+}
+
+.cards-container{
+  display: inline-block;
+  overflow: visible;
+}
+
+@media only screen and (max-width : 600px) {
+  .cards-container {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+  }
+}
+@media only screen and (min-width : 601px) {
+  .cards-container {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+@media only screen and (min-width : 993px) {
+  .cards-container {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
