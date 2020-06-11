@@ -16,8 +16,8 @@ export class CoursesComponent implements OnInit {
   constructor(public courseService: CoursesService) { }
 
   ngOnInit(): void {
-    this.courses = this.courseService.getCoursesList();
-    console.log('Cursos')
+    // Load all the courses
+    this.courses = this.courseService.courses;
   }
 
   addCourse() {
@@ -25,7 +25,28 @@ export class CoursesComponent implements OnInit {
   }
 
   deleteCard(courseTitle: string) {
-    this.courseService.deleteCourse(this.courses.find((course) => course.title === courseTitle));
+    // this.courseService.deleteCourse(this.courses.find((course) => course.title === courseTitle));
+    Swal.fire({
+      title: `Está seguro/a que desea borrar el curso: ${courseTitle}`,
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      showCancelButton: true,
+      confirmButtonColor: '#00ce89',
+      cancelButtonColor: '#EF5350'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+        this.courseService.deleteCourse(courseTitle)
+          .then(resp => {
+            this.responseDialog(resp);
+          })
+      }
+    });
   }
 
   editCard(courseTitle: string) {
@@ -59,26 +80,41 @@ export class CoursesComponent implements OnInit {
       }
     ]).then((result: any) => {
       if (result.value) {
+        // Evaluate input values
         const values = JSON.parse(JSON.stringify(result.value))
-        let errFlag = false
-        if (!errFlag) {
-          if (course === null)
-            // We want to add a course
-            this.courseService.addCourse(new Course(values[0], values[1], values[2]))
-          else
-            // We want to edit a course
-            this.courseService.editCourse(course, new Course(values[0], values[1], values[2]))
-
-          Swal.fire({
-            title: 'Todo correcto',
-            text: 'Curso agregado correctamente',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#00ce89'
-          })
+        // Show loading while action is performing
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+        // Check which action to perform
+        if (course === null) {
+          // We want to add a course
+          this.courseService.addCourse(new Course(values[0], values[1], values[2]))
+            .then(resp => {
+              this.responseDialog(resp);
+            })
+        }
+        else {
+          // We want to edit a course
+          this.courseService.editCourse(course, new Course(values[0], values[1], values[2]))
+            .then(resp => {
+              this.responseDialog(resp);
+            })
         }
       }
     })
   }
 
+  responseDialog(resp: {state: boolean, msg: string}) {
+    Swal.fire({
+      title: resp.state? 'Todo correcto': 'Error',
+      text: resp.msg,
+      icon: resp.state? 'success': 'error',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#00ce89'
+    })
+  }
 }

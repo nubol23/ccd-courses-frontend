@@ -24,6 +24,7 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
   }
 
   ngOnInit(): void {
+    console.log(this.course);
   }
 
   saveEdit() {
@@ -32,6 +33,18 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
     this.editable = false;
 
     // TODO: POST A LA DB
+    const newSection = new Section(
+      this.section.courseName,
+      this.section.sectionName,
+      this.section.videoId,
+      this.section.liveUrl
+    );
+    newSection.sectionExplanation = this.section.sectionExplanation;
+
+    this.courseContentService.editSection(this.course.title, this.section,  newSection)
+      .then(resp => {
+        this.responseDialog(resp);
+      })
   }
 
   startEdit() {
@@ -45,13 +58,13 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
 
     console.log(this.course);
 
-    if (this.section.sectionName === 'contenido') {
-      this.section.sectionExplanation = `
-      ### Bienvenido/a al curso: ${this.course.title}
-
-      ${this.course.description}
-      `
-    }
+    // if (this.section.sectionName === 'contenido') {
+    //   this.section.sectionExplanation = `
+    //   ### Bienvenido/a al curso: ${this.course.title}
+    //
+    //   ${this.course.description}
+    //   `
+    // }
   }
 
   uploadProgrammingAssignment(event) {
@@ -59,6 +72,14 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
     console.log(this.fileToUpload);
   }
 
-
+  responseDialog(resp: {state: boolean, msg: string}) {
+    Swal.fire({
+      title: resp.state? 'Todo correcto': 'Error',
+      text: resp.msg,
+      icon: resp.state? 'success': 'error',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#00ce89'
+    })
+  }
 
 }

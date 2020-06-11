@@ -12,6 +12,16 @@
 
 <div class="container">
   <br><br>
-  <app-course-section [section]="sections[currentSectionIdx]"
-                      [course]="getCourse()"></app-course-section>
+<!--  <div *ngIf="course">-->
+<!--    {{course.title}}-->
+<!--  </div>-->
+
+<!--  {{getCourse() | async}}-->
+<!--  <app-course-section [section]="sections[currentSectionIdx]"-->
+<!--                      [course]="getCourse()"></app-course-section>-->
+
+    <app-course-section *ngIf="course && sections[currentSectionIdx]"
+                        [section]="sections[currentSectionIdx]"
+                        [course]="course"></app-course-section>
+
 </div>
