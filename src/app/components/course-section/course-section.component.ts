@@ -4,7 +4,7 @@ import {Section} from "../../models/section";
 import {CourseContentService} from "../../services/course-content.service";
 import {init} from "protractor/built/launcher";
 import Swal from "sweetalert2";
-import {Assignment} from "../../models/assignment";
+import {Assignment, AssignmentFile} from "../../models/assignment";
 import {Course} from "../../models/course";
 
 @Component({
@@ -17,14 +17,15 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
   @Input() section: Section;
   @Input() course: Course;
   editable = false;
-  fileToUpload: File = null;
+  // fileToUpload: File = null;
+  assignmentFile: AssignmentFile;
 
   constructor(private activatedRoute: ActivatedRoute,
               private courseContentService: CourseContentService) {
   }
 
   ngOnInit(): void {
-    console.log(this.course);
+    // console.log(this.course);
   }
 
   saveEdit() {
@@ -33,15 +34,22 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
     this.editable = false;
 
     // TODO: POST A LA DB
-    const newSection = new Section(
-      this.section.courseName,
+    let newSection = new Section(
+      this.section.courseId,
       this.section.sectionName,
       this.section.videoId,
       this.section.liveUrl
     );
+    newSection.uid = this.section.uid;
     newSection.sectionExplanation = this.section.sectionExplanation;
 
-    this.courseContentService.editSection(this.course.title, this.section,  newSection)
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
+    this.courseContentService.editSection(this.section,  newSection)
       .then(resp => {
         this.responseDialog(resp);
       })
@@ -56,7 +64,7 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
     // console.log(this.section.sectionExplanation);
     // this.localMarkdown = this.section.sectionExplanation;
 
-    console.log(this.course);
+    // console.log(this.course);
 
     // if (this.section.sectionName === 'contenido') {
     //   this.section.sectionExplanation = `
@@ -68,8 +76,14 @@ export class CourseSectionComponent implements OnInit ,OnChanges {
   }
 
   uploadProgrammingAssignment(event) {
-    this.fileToUpload = event.target.files[0];
-    console.log(this.fileToUpload);
+    // this.fileToUpload = event.target.files[0];
+    // console.log(this.fileToUpload);
+
+    // let assignment: AssignmentFile = new AssignmentFile(this.fileToUpload, this.section.uid+'.html');
+    this.assignmentFile = new AssignmentFile(event.target.files[0], this.section.uid+'.html');
+    // console.log(this.assignmentFile);
+
+    let res = this.courseContentService.uploadFile(this.section, this.assignmentFile);
   }
 
   responseDialog(resp: {state: boolean, msg: string}) {

@@ -1,4 +1,4 @@
-<app-sidenav [courseName]="courseName" [sections]="sections" (ngSectionToLoad)="loadSection($event)"></app-sidenav>
+<app-sidenav [courseId]="courseId" [sections]="sections" (ngSectionToLoad)="loadSection($event)"></app-sidenav>
 
 <div class="row">
   <div class="col right">
@@ -12,13 +12,9 @@
 
 <div class="container">
   <br><br>
-<!--  <div *ngIf="course">-->
-<!--    {{course.title}}-->
-<!--  </div>-->
-
-<!--  {{getCourse() | async}}-->
-<!--  <app-course-section [section]="sections[currentSectionIdx]"-->
-<!--                      [course]="getCourse()"></app-course-section>-->
+<!--  <pre *ngIf="course">-->
+<!--    {{course | json}}-->
+<!--  </pre>-->
 
     <app-course-section *ngIf="course && sections[currentSectionIdx]"
                         [section]="sections[currentSectionIdx]"

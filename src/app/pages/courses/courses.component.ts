@@ -18,16 +18,18 @@ export class CoursesComponent implements OnInit {
   ngOnInit(): void {
     // Load all the courses
     this.courses = this.courseService.courses;
+
+    // console.log(this.courses);
   }
 
   addCourse() {
     this.alertController(null);
   }
 
-  deleteCard(courseTitle: string) {
+  deleteCard(courseId: string) {
     // this.courseService.deleteCourse(this.courses.find((course) => course.title === courseTitle));
     Swal.fire({
-      title: `Está seguro/a que desea borrar el curso: ${courseTitle}`,
+      title: `¿Está seguro/a que desea borrar el curso?`,
       icon: 'warning',
       confirmButtonText: 'OK',
       showCancelButton: true,
@@ -41,7 +43,7 @@ export class CoursesComponent implements OnInit {
           text: 'Espere por favor'
         });
         Swal.showLoading();
-        this.courseService.deleteCourse(courseTitle)
+        this.courseService.deleteCourse(courseId)
           .then(resp => {
             this.responseDialog(resp);
           })
@@ -49,8 +51,8 @@ export class CoursesComponent implements OnInit {
     });
   }
 
-  editCard(courseTitle: string) {
-    this.alertController(this.courses.find((course) => course.title === courseTitle));
+  editCard(courseId: string) {
+    this.alertController(this.courses.find((course) => course.uid === courseId));
   }
 
   alertController(course:Course) {
@@ -69,6 +71,7 @@ export class CoursesComponent implements OnInit {
       {
         title: 'Descripción del curso',
         inputValue: course === null? '': course.description,
+        // @ts-ignore
         input: "textarea",
         inputValidator: (inputValue: string) => inputValue === ''? 'No se permiten campos vacíos': ''
       },
@@ -99,7 +102,9 @@ export class CoursesComponent implements OnInit {
         }
         else {
           // We want to edit a course
-          this.courseService.editCourse(course, new Course(values[0], values[1], values[2]))
+          let newCourse = new Course(values[0], values[1], values[2]);
+          newCourse.uid = course.uid
+          this.courseService.editCourse(course, newCourse)
             .then(resp => {
               this.responseDialog(resp);
             })

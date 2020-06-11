@@ -8,10 +8,7 @@ export class SafeurlPipe implements PipeTransform {
 
   constructor(private domSanitizer: DomSanitizer) { }
 
-
   transform(value: string): SafeResourceUrl {
-    value = 'https://www.youtube.com/embed/' + value;
-    console.log(value);
     return this.domSanitizer.bypassSecurityTrustResourceUrl(value);
   }
 

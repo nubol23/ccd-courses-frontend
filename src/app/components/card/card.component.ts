@@ -20,11 +20,11 @@ export class CardComponent implements OnInit {
   }
 
   editCard() {
-    this.ngEditCard.emit(this.course.title);
+    this.ngEditCard.emit(this.course.uid);
   }
 
   deleteCard() {
-    this.ngDeleteCard.emit(this.course.title);
+    this.ngDeleteCard.emit(this.course.uid);
   }
 
   redirectCard() {

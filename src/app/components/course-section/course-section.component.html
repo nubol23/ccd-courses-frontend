@@ -3,6 +3,8 @@
 <div class="row center" *ngIf="section.videoId">
   <youtube-player
     [videoId]="section.videoId"
+    height="300px"
+    width="640px"
     suggestedQuality="highres">
   </youtube-player>
 </div>
@@ -45,12 +47,22 @@
 
 <div class="row right-align">
   <span class="btn btn-file light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
-<!--    <i class="material-icons left">cloud_upload</i>-->
     <i class="fas fa-code"></i>
     Subir
     <input type="file" (change)="uploadProgrammingAssignment($event)">
   </span>
 </div>
+<div class="row" *ngIf="assignmentFile && assignmentFile.uploading">
+  <div class="progress" >
+    <div class="determinate custom-secondary lighten-1" [ngStyle]="{'width': assignmentFile.progress + '%'}"></div>
+  </div>
+</div>
+
+<iframe *ngIf="section.programmingAssignmentUrl"
+        [src]="section.programmingAssignmentUrl | safeurl"
+        width="100%"
+        height="500px"
+        style="overflow: hidden; border: none"></iframe>
 
 <!--<iframe src="https://firebasestorage.googleapis.com/v0/b/chat-da9a1.appspot.com/o/htmls%2Ffile.html?alt=media&token=5f019407-5929-4947-9b6b-1cb2be0f383c"-->
 <!--        width="100%"-->

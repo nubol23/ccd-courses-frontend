@@ -2,20 +2,21 @@ import {strict} from "assert";
 import {stringify} from "querystring";
 
 export class Section {
-  courseName: string;
+  uid: string = '';
+  courseId: string;
   sectionName: string;
   videoId: string = '';
   liveUrl: string;
   sectionExplanation: string;
-  programmingAssignmentsUrl: string;
+  programmingAssignmentUrl: string;
 
-  constructor(courseName: string, sectionName: string, videoId: string, liveUrl: string) {
-    this.courseName = courseName;
+  constructor(courseId: string, sectionName: string, videoId: string, liveUrl: string) {
+    this.courseId = courseId;
     this.sectionName = sectionName;
     this.videoId = videoId;
     this.liveUrl = liveUrl;
 
     this.sectionExplanation = '';
-    this.programmingAssignmentsUrl = '';
+    this.programmingAssignmentUrl = '';
   }
 }

@@ -13,7 +13,7 @@ import {CoursesService} from "../../services/courses.service";
 })
 export class CourseComponent implements OnInit {
 
-  courseName: string;
+  courseId: string;
   sections: Section[] = [];
   course: Course;
   currentSectionIdx: number = 0;
@@ -24,13 +24,13 @@ export class CourseComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      this.courseName = params['title'];
+      this.courseId = params['uid'];
     });
 
-    this.courseContentService.getSectionList(this.courseName);
+    this.courseContentService.getSectionList(this.courseId);
     this.sections = this.courseContentService.sections;
 
-    this.coursesService.getCourse(this.courseName)
+    this.coursesService.getCourse(this.courseId)
       .then(res => {
         // @ts-ignore
         this.course = res;
@@ -71,7 +71,7 @@ export class CourseComponent implements OnInit {
           // We want to add a section
           // values[1] = 'https://www.youtube.com/embed/' + values[1];
           // this.courseContentService.addSection(this.courseName, new Section(values[0], values[1], values[2]));
-          this.courseContentService.addSection(this.courseName, new Section(this.courseName, values[0], values[1], values[2]))
+          this.courseContentService.addSection(new Section(this.courseId, values[0], values[1], values[2]))
             .then(resp => {
               this.responseDialog(resp);
             })

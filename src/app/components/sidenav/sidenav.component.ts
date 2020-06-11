@@ -11,7 +11,7 @@ import {Section} from "../../models/section";
 export class SidenavComponent implements OnInit, OnDestroy {
 
   @Input() sections: Section[] = [];
-  @Input() courseName: string;
+  @Input() courseId: string;
   @Output() ngSectionToLoad = new EventEmitter<number>();
   selectedSection: number = 0; // Auto select first section by default
 
