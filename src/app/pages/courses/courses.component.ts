@@ -3,6 +3,7 @@ import {CoursesService} from "../../services/courses.service";
 import {Course} from "../../models/course";
 
 import Swal from 'sweetalert2';
+import {CourseContentService} from "../../services/course-content.service";
 
 @Component({
   selector: 'app-courses',
@@ -13,7 +14,8 @@ export class CoursesComponent implements OnInit {
 
   courses: Course[] = [];
 
-  constructor(public courseService: CoursesService) { }
+  constructor(public courseService: CoursesService,
+              private courseContentService: CourseContentService) { }
 
   ngOnInit(): void {
     // Load all the courses
@@ -122,4 +124,8 @@ export class CoursesComponent implements OnInit {
       confirmButtonColor: '#00ce89'
     })
   }
+
+  // tempDel() {
+  //   this.courseContentService.deleteSections('VJKP7bLjdSVpLu8stUeD');
+  // }
 }

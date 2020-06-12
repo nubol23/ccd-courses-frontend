@@ -4,6 +4,7 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import Swal from "sweetalert2";
 import {Subject} from "rxjs";
 import {take} from "rxjs/operators";
+import {CourseContentService} from "./course-content.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class CoursesService {
 
   courses: Course[] = [];
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore,
+              private courseContentService: CourseContentService) {
     // Load all the courses on startup
     // this.afs.collection('courses').valueChanges()
     //   .pipe(take(1))  // take operator automatically unsubscribes after passed count
@@ -64,16 +66,54 @@ export class CoursesService {
 
   }
 
+  // deleteCourse(courseId: string){
+  //   return this.afs.collection('courses').doc(courseId).delete()
+  //     .then(() => {
+  //
+  //       // Delete its sections
+  //       console.log('Antes de entrar');
+  //       return this.courseContentService.deleteSections(courseId).then(res => {
+  //         console.log(res);
+  //         if (res['state']) {
+  //
+  //           // Delete course from list
+  //           const idx = this.courses.findIndex((course: Course) => course.uid == courseId);
+  //           this.courses.splice(idx, 1);
+  //
+  //           return {state: true, msg: 'Curso eliminado correctamente'};
+  //         }
+  //         else {
+  //           // return {state: false, msg: 'Error al eliminar'};
+  //           return res;
+  //         }
+  //       })
+  //     })
+  //     .catch(() => {
+  //       return {state: false, msg: 'Error al eliminar'};
+  //     });
+  // }
+
   deleteCourse(courseId: string){
-    return this.afs.collection('courses').doc(courseId).delete()
-      .then(() => {
-        const idx = this.courses.findIndex((course: Course) => course.uid == courseId);
-        this.courses.splice(idx, 1);
-        return {state: true, msg: 'Curso eliminado correctamente'};
-      })
-      .catch(() => {
-        return {state: false, msg: 'Error al eliminar'};
-      });
+    // Delete its sections
+    return this.courseContentService.deleteSections(courseId).then(res => {
+      if (res['state']) {
+        return this.afs.collection('courses').doc(courseId).delete()
+          .then(() => {
+
+            // Delete course from list
+            const idx = this.courses.findIndex((course: Course) => course.uid == courseId);
+            this.courses.splice(idx, 1);
+
+            return {state: true, msg: 'Curso eliminado correctamente'};
+        })
+        .catch(() => {
+          return {state: false, msg: 'Error al eliminar el curso'};
+        });
+      }
+      else {
+        return res;
+      }
+    })
   }
 
   editCourse(oldCourse: Course, newCourse: Course) {

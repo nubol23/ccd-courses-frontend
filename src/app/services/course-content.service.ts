@@ -11,29 +11,18 @@ import {AssignmentFile} from "../models/assignment";
 })
 export class CourseContentService {
 
-  // Variables just for comunications (Used in sidenav and navbar)
-  // Navbar uses to get sidenav info on collapsed state
-  sidenavContent: string[] = [];
-  sidenavCourseName: string = '';
-
-  // sections: any = {
-  //   'Python 1': [new Section('contenido', '', ''),],
-  //   'Python 2': [new Section('contenido', '', ''), new Section('prueba', 'o7n-aXtmwB8', '')],
-  //   'Python 3': [new Section('contenido', '', ''),],
-  //   'Python 4': [new Section('contenido', '', ''),],
-  //   'Python 5': [new Section('contenido', '', ''),],
-  //   'Python 6': [new Section('contenido', '', ''),],
-  //   'Python 7': [new Section('contenido', '', ''),],
-  // }
-
+  sectionsIndexesBackup: number[] = [];
   sections: Section[] = [];
   folderName: string = 'exercises'
 
   constructor(private afs: AngularFirestore) {}
 
   getSectionList(courseId: string) {
-    while (this.sections.length) { this.sections.pop(); }
-    this.afs.collection('sections', ref => ref.where('courseId', '==', courseId))
+    // while (this.sections.length) { this.sections.pop(); }
+    this.cleanSectionsList();
+    return this.afs.collection('sections', ref =>
+      // ref.where('courseId', '==', courseId).orderBy('creationDate'))
+      ref.where('courseId', '==', courseId).orderBy('arrayIdx'))
       .get().pipe(take(1)).toPromise()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -42,42 +31,36 @@ export class CourseContentService {
           section.uid = doc.id;
           this.sections.push(section)
         })
+
+        return {state: true, msg: 'Cargado correctamente'}
       })
-      .catch(() => console.log('Error :('));
+      .catch((err) => {
+        console.log('AA:', err);
+        return {state: false, msg: 'Error al cargar secciones'}
+      });
   }
 
-  // getSection(courseName: string, sectionName: string) {
-  //   for (let i = 0; i < this.sections[courseName].length; i++) {
-  //     if (this.sections[courseName][i].sectionName === sectionName) {
-  //       return this.sections[courseName][i];
-  //     }
-  //   }
-  // }
+  cleanSectionsList() {
+    while (this.sections.length) { this.sections.pop(); }
+  }
 
   addSection(section: Section) {
-    // this.sections[courseName].push(section);
-    // this.sidenavContent.push(section.sectionName);
-    // Check if course exist
+    if (this.sections.length === 0) {
+      section.arrayIdx = 0;
+    }
+    else {
+      section.arrayIdx = Math.max(...this.sections.map(s => s.arrayIdx)) + 1;
+    }
 
-    // const sectionFilename = `${courseId}-${section.sectionName}`;
-    // return this.afs.collection('sections').doc(sectionFilename).get().toPromise()
-    //   .then(doc => {
-    //     if (doc.exists) {
-    //       return {state: false, msg: 'La sección ya existe'}
-    // console.log('id: ' + section.uid)
-    return this.afs.collection('sections', ref => ref.where('sectionName', '==', section.sectionName))
+    return this.afs.collection('sections', ref => ref
+      .where('sectionName', '==', section.sectionName)
+      .where('courseId', '==', section.courseId))
       .get().pipe(take(1)).toPromise()
       .then((querySnapshot) => {
         if (querySnapshot.size > 0) {
-          // querySnapshot.forEach(doc => {
-          //   console.log('id-2: ' + doc)
-          // })
           return {state: false, msg: 'La sección ya existe'}
         }
         else {
-          // Add new course
-          // return this.afs.collection('sections').doc(sectionFilename)
-          //   .set({...section})
           return this.afs.collection('sections').add({
             ...section
           })
@@ -92,31 +75,80 @@ export class CourseContentService {
 
   }
 
-  // deleteSection(courseName: string, section: Section){
-  //   for (let i = 0; i < this.sections[courseName].length; i++) {
-  //     if (this.sections[courseName][i].sectionName === section.sectionName) {
-  //       this.sections[courseName].splice(i, 1);
-  //       this.sidenavContent.splice(i, 1);
-  //       break;
-  //     }
-  //   }
+  // private _deleteSectionHelper(sectionId: string, idx: number) {
+  //   return this.afs.collection('sections').doc(sectionId).delete()
+  //     .then(() => {
+  //       this.sections.splice(idx, 1);
+  //       return {state: true, msg: 'La sección fue eliminada correctamente'};
+  //     })
+  //     .catch(() => {
+  //       return {state: false, msg: 'Error al eliminar la sección'};
+  //     });
   // }
 
-  editSection(oldSection: Section, newSection: Section) {
-  //   for (let i = 0; i < this.sections[courseName].length; i++) {
-  //     if (this.sections[courseName][i].sectionName === oldSection.sectionName) {
-  //       this.sections[courseName][i] = newSection;
-  //       break;
-  //     }
-  //   }
+  private _deleteSectionHelper(sectionId: string, idx: number) {
+    return this.afs.collection('sections').doc(sectionId).delete()
+      .then(() => {
+        this.sections.splice(idx, 1);
+        return {state: true, msg: 'La sección fue eliminada correctamente'};
+      })
+      .catch(() => {
+        return {state: false, msg: 'Error al eliminar la sección'};
+      });
+  }
 
-  //   const oldSectionFilename = `${courseId}-${oldSection.sectionName}`;
-  //   console.log('FILENAME:' + oldSectionFilename);
-  //   return this.afs.collection('sections').doc(oldSectionFilename)
-    return this.afs.collection('sections').doc(oldSection.uid)
+  deleteSection(sectionId: string){
+    const idx = this.sections.findIndex((section: Section) => section.uid == sectionId);
+
+    if (this.sections[idx].programmingAssignmentUrl) {
+      return this.deleteFile(this.sections[idx])
+        .then(res => {
+          if (res['state']) {
+            return this._deleteSectionHelper(sectionId, idx).then(res => res).catch(res => res);
+          } else
+            return res;
+        })
+        .catch(res => {
+          return {state: false, msg: 'Error al eliminar la sección, porque no se pudo eliminar el ejercicio'};
+        })
+    }
+    else {
+      return this._deleteSectionHelper(sectionId, idx).then(res => res).catch(res => res);
+    }
+  }
+
+  deleteSections(courseId) {
+    console.log('Entre');
+
+    return this.getSectionList(courseId)
+      .then(res => {
+        if (res['state']) {
+
+          let flag = true;
+          for (let tempSection of this.sections) {
+            console.log('Bucle');
+            this.deleteSection(tempSection.uid)
+              .then(resp => {
+                flag = flag && resp['state'];
+              })
+          }
+
+          return flag? {state: true, msg: 'Secciones eliminadas'}: {state: false, msg: 'Error al eliminar alguna sección'};
+        }
+        else {
+          return {state: false, msg: 'Error al eliminar las secciones'};
+        }
+      })
+  }
+
+  // editSection(oldSection: Section, newSection: Section) {
+    // return this.afs.collection('sections').doc(oldSection.uid)
+  editSection(newSection: Section) {
+    return this.afs.collection('sections').doc(newSection.uid)
       .update({...newSection})
       .then(() => {
-        const idx = this.sections.findIndex((section: Section) => section.uid == oldSection.uid);
+        // const idx = this.sections.findIndex((section: Section) => section.uid == oldSection.uid);
+        const idx = this.sections.findIndex((section: Section) => section.uid == newSection.uid);
         this.sections[idx] = newSection;
         return {state: true, msg: 'Actualizado correctamente'}
       })
@@ -157,7 +189,8 @@ export class CourseContentService {
             html.url = url;
             html.uploading = false;
             section.programmingAssignmentUrl = html.url;
-            this.editSection(section, section)
+            // this.editSection(section, section)
+            this.editSection(section)
               .then(res => {
                 Swal.fire({
                   title: 'Todo correcto',
@@ -171,7 +204,50 @@ export class CourseContentService {
               // .catch(() => {return {state: false, msg: 'Error al cargar archivo'}});
             // return {state: true, msg: 'Archivo cargado correctamente'};
           })
-          // .catch(() => {return {state: false, msg: 'Error al cargar archivo'}});
-      });
+        // .catch(() => {return {state: false, msg: 'Error al cargar archivo'}});
+    });
+  }
+
+
+  deleteFile(section: Section) {
+    return firebase.storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
+      .then(res => {
+        section.programmingAssignmentUrl = "";
+        return this.editSection(section)
+          .then(res => {
+            if (res['state'])
+              return {state: true, msg: 'Ejercicio eliminado correctamente'};
+            else
+              return res;
+          })
+          .catch(res => {
+            return {state: false, msg: 'Error al eliminar ejercicio, no se pudo actualizar la sección'};
+          })
+      })
+      .catch(res => {
+        return {state: false, msg: 'Error al eliminar ejercicio'};
+      })
+  }
+
+  backupSectionIndexes() {
+    this.sectionsIndexesBackup = this.sections.map(s => s.arrayIdx);
+  }
+
+  updateSectionIndexes() {
+    let flag = true;
+    for (let i = 0; i < this.sections.length; i++) {
+      if (this.sections[i].arrayIdx !== this.sectionsIndexesBackup[i]) {
+        let temp = {...this.sections[i]};
+        temp.arrayIdx = i;
+
+        this.editSection(temp)
+          .then(resp => {
+          flag = flag && resp['state'];
+        })
+      }
     }
+
+    return flag? {state: true, msg: 'Secciones ordenadas'}: {state: false, msg: 'Error al ordenar las secciones'};
+  }
+
 }

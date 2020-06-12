@@ -18,6 +18,7 @@ import {MarkdownModule} from "ngx-markdown";
 import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
     FormsModule,
     MarkdownModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

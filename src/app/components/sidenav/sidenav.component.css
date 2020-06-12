@@ -1,4 +1,16 @@
 .sidenav {
   top: initial!important;
   float: left!important;
+  /*display: flex!important;*/
+  /*flex-flow: column!important;*/
+  /*bottom: initial!important;*/
+}
+
+ul {
+  min-width: 200px;
+  width: auto;
+}
+
+.divider {
+  margin: 0 0 0 0;
 }

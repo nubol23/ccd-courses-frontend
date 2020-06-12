@@ -1,5 +1,21 @@
-<ul class="sidenav sidenav-fixed animate__animated animate__fadeIn animate__fast">
-  <li [ngClass]="{'active': i === selectedSection}" *ngFor="let section of sections; let i = index">
+<!--IF EDITABLE-->
+<ul *ngIf="onNavbarEdit" cdkDropList
+    (cdkDropListDropped)="drop($event)"
+    class="sidenav sidenav-fixed animate__animated animate__fadeIn animate__fast">
+  <li cdkDrag
+      [ngClass]="{'active': i === selectedSection}"
+      *ngFor="let section of sections; let i = index">
+      <a class="waves-effect" (click)="emitSection(i)">{{section.sectionName}}</a>
+    <div class="divider"></div>
+  </li>
+</ul>
+
+<!--IF NOT EDITABLE-->
+<ul *ngIf="!onNavbarEdit"
+    id="slide-out"
+    class="sidenav sidenav-fixed animate__animated animate__fadeIn animate__fast">
+  <li [ngClass]="{'active': i === selectedSection}"
+      *ngFor="let section of sections; let i = index">
     <a class="waves-effect" (click)="emitSection(i)">{{section.sectionName}}</a>
     <div class="divider"></div>
   </li>

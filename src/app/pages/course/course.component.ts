@@ -1,34 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import Swal from 'sweetalert2';
 import {Course} from "../../models/course";
 import {Section} from "../../models/section";
 import {CourseContentService} from "../../services/course-content.service";
 import {ActivatedRoute} from "@angular/router";
 import {CoursesService} from "../../services/courses.service";
+import {NavSideSharedService} from "../../services/nav-side-shared.service";
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css']
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent implements OnInit, OnDestroy {
 
   courseId: string;
   sections: Section[] = [];
   course: Course;
-  currentSectionIdx: number = 0;
+  // currentSectionIdx: number = 0;
+
+  onNavbarEdit: boolean;
 
   constructor(public courseContentService: CourseContentService,
               private activatedRoute: ActivatedRoute,
-              private coursesService: CoursesService) { }
+              private coursesService: CoursesService,
+              public navSideSharedService: NavSideSharedService) {
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       this.courseId = params['uid'];
     });
 
-    this.courseContentService.getSectionList(this.courseId);
-    this.sections = this.courseContentService.sections;
+    this.courseContentService.getSectionList(this.courseId)
+      .then(res => {
+        console.log('Ya cargué');
+        this.sections = this.courseContentService.sections;
+      })
 
     this.coursesService.getCourse(this.courseId)
       .then(res => {
@@ -69,8 +77,6 @@ export class CourseComponent implements OnInit {
         Swal.showLoading();
         if (course === null) {
           // We want to add a section
-          // values[1] = 'https://www.youtube.com/embed/' + values[1];
-          // this.courseContentService.addSection(this.courseName, new Section(values[0], values[1], values[2]));
           this.courseContentService.addSection(new Section(this.courseId, values[0], values[1], values[2]))
             .then(resp => {
               this.responseDialog(resp);
@@ -87,29 +93,10 @@ export class CourseComponent implements OnInit {
     this.alertController(null);
   }
 
-  // getItems() {
-  //   // sidenav items name
-  //   return this.sections.map((section: Section) => section.sectionName);
-  // }
-
   loadSection (sectionIndex: number) {
-    this.currentSectionIdx = sectionIndex;
+    // this.currentSectionIdx = sectionIndex;
+    this.navSideSharedService.selectedSection = sectionIndex;
   }
-
-  //
-  // getCourse() {
-    // let course = this.coursesService.getCourse(this.courseName);
-    // console.log(course);
-    // return course;
-
-    // this.coursesService.getCourse(this.courseName)
-    //   .then(res => {
-    //     // @ts-ignore
-    //     this.course = res;
-    //   })
-
-    // return this.coursesService.getCourse(this.courseName);
-  // }
 
   responseDialog(resp: {state: boolean, msg: string}) {
     Swal.fire({
@@ -119,5 +106,51 @@ export class CourseComponent implements OnInit {
       confirmButtonText: 'OK',
       confirmButtonColor: '#00ce89'
     })
+  }
+
+  deleteSection(sectionIdx) {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
+
+    if (sectionIdx == this.sections.length-1) {
+      // Goto next element
+      // this.currentSectionIdx = 0;
+      this.navSideSharedService.selectedSection;
+    }
+    else {
+      // Got to start if at end
+      // this.currentSectionIdx = sectionIdx;
+      this.navSideSharedService.selectedSection;
+    }
+    // Delete the section
+    this.courseContentService.deleteSection(this.sections[sectionIdx].uid)
+      .then(resp => {
+        this.responseDialog(resp);
+      })
+  }
+
+  startNavbarEdit() {
+    this.onNavbarEdit = true;
+    this.courseContentService.backupSectionIndexes();
+  }
+
+  endNavbarEdit() {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
+
+    this.onNavbarEdit = false;
+    this.responseDialog(this.courseContentService.updateSectionIndexes());
+  }
+
+  ngOnDestroy() {
+    this.courseContentService.cleanSectionsList();
   }
 }

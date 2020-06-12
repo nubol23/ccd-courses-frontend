@@ -1,5 +1,12 @@
 <!--<h3>{{section.sectionName}}</h3>-->
 
+<div class="row left-align">
+  <button (click)="emmitSectionDeleteEvent()" class="waves-effect waves-light btn red lighten-2 animate__animated animate__fadeIn animate__faster">
+    Eliminar sección
+    <i class="fas fa-times left"></i>
+  </button>
+</div>
+
 <div class="row center" *ngIf="section.videoId">
   <youtube-player
     [videoId]="section.videoId"
@@ -10,39 +17,66 @@
 </div>
 
 <div class="row left-align" *ngIf="!section.videoId && section.liveUrl">
-  <a href="#" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+  <a [href]="section.liveUrl" target="_blank" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
     Livestream
     <i class="fas fa-play left"></i>
   </a>
 </div>
 
-<div class="row right-align" style="margin-bottom: 20px">
-    <button *ngIf="editable" (click)="saveEdit()" class="btn green darken-1">
-      <i class="fas fa-check"></i>
+<div class="row center">
+  <div class="row right-align" style="margin-bottom: 20px">
+    <!--  <button *ngIf="editable" (click)="saveEdit()" class="btn green darken-1">-->
+    <button *ngIf="editable" (click)="saveEdit()" class="btn light-blue lighten-2">
+      <i class="fas fa-save"></i>
+    </button>
+    <button *ngIf="editable" (click)="cancelEdit()" class="btn red lighten-2 right">
+      <i class="fas fa-times"></i>
     </button>
 
     <button *ngIf="!editable" (click)="startEdit()" class="btn light-blue lighten-2">
       <i class="far fa-edit"></i>
     </button>
-</div>
-
-<div class="row center">
-
-  <div *ngIf="editable" class="input-field col s12">
-    <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="variable-textarea"></textarea>
   </div>
 
-  <div *ngIf="!editable && section.sectionExplanation !== ''">
-    <div class="card">
-      <div class="card-content left-align">
-        <div *ngIf="!editable && section.sectionExplanation !== ''">
-          <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
-          </markdown>
+  <div *ngIf="editable" class="row">
+    <div class="input-field col s12">
+      <input [(ngModel)]="onEditSectionName" id="section-name" type="text" class="validate">
+      <label for="section-name">Título de la sección</label>
+    </div>
+  </div>
+
+  <div *ngIf="editable" class="row">
+    <div class="input-field col s12">
+      <input [(ngModel)]="section.videoId" id="section-video" type="text" class="validate">
+      <label for="section-video">Id del video de youtube</label>
+    </div>
+  </div>
+
+  <div *ngIf="editable" class="row">
+    <div class="input-field col s12">
+      <input [(ngModel)]="section.liveUrl" id="section-livestream" type="text" class="validate">
+      <label for="section-livestream">Url del livestream</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngIf="editable" class="input-field col s12">
+<!--      <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="variable-textarea"></textarea>-->
+      <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>
+      <label for="explanation">Explicación</label>
+    </div>
+
+    <div *ngIf="!editable && section.sectionExplanation !== ''" class="col s12">
+      <div class="card">
+        <div class="card-content left-align">
+          <div *ngIf="!editable && section.sectionExplanation !== ''">
+            <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
+            </markdown>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="row right-align">
@@ -51,6 +85,10 @@
     Subir
     <input type="file" (change)="uploadProgrammingAssignment($event)">
   </span>
+
+  <button *ngIf="section.programmingAssignmentUrl" (click)="deleteProgrammingAssignment()" class="btn red lighten-2 right">
+    <i class="fas fa-times"></i>
+  </button>
 </div>
 <div class="row" *ngIf="assignmentFile && assignmentFile.uploading">
   <div class="progress" >
@@ -63,8 +101,3 @@
         width="100%"
         height="500px"
         style="overflow: hidden; border: none"></iframe>
-
-<!--<iframe src="https://firebasestorage.googleapis.com/v0/b/chat-da9a1.appspot.com/o/htmls%2Ffile.html?alt=media&token=5f019407-5929-4947-9b6b-1cb2be0f383c"-->
-<!--        width="100%"-->
-<!--        height="500px"-->
-<!--        style="overflow: hidden; border: none"></iframe>-->

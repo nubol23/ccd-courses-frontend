@@ -1,8 +1,25 @@
-<app-sidenav [courseId]="courseId" [sections]="sections" (ngSectionToLoad)="loadSection($event)"></app-sidenav>
+<!--<app-sidenav [selectedSection]="currentSectionIdx"-->
+<!--             [courseId]="courseId"-->
+<!--             [sections]="sections"-->
+<!--             (ngSectionToLoad)="loadSection($event)"-->
+<!--             [onNavbarEdit]="onNavbarEdit"></app-sidenav>-->
+<app-sidenav [selectedSection]="navSideSharedService.selectedSection"
+             [courseId]="courseId"
+             [sections]="sections"
+             (ngSectionToLoad)="loadSection($event)"
+             [onNavbarEdit]="onNavbarEdit"></app-sidenav>
 
 <div class="row">
+  <br><br>
+  <div class="col left-align">
+    <button *ngIf="!onNavbarEdit" (click)="startNavbarEdit()" class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+      <i class="fas fa-list"></i>
+    </button>
+    <button *ngIf="onNavbarEdit" (click)="endNavbarEdit()" class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+      <i class="fas fa-save"></i>
+    </button>
+  </div>
   <div class="col right">
-    <br><br>
     <button (click)="addSection()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
       Agregar sección
       <i class="fa fa-plus left"></i>
@@ -12,12 +29,18 @@
 
 <div class="container">
   <br><br>
-<!--  <pre *ngIf="course">-->
-<!--    {{course | json}}-->
-<!--  </pre>-->
+<!--    <app-course-section *ngIf="course && sections[currentSectionIdx]"-->
+<!--                        [section]="sections[currentSectionIdx]"-->
+<!--                        [course]="course"-->
+<!--                        [sectionIdx]="currentSectionIdx"-->
+<!--                        (ngSectionDeleted)="deleteSection($event)">-->
+<!--    </app-course-section>-->
 
-    <app-course-section *ngIf="course && sections[currentSectionIdx]"
-                        [section]="sections[currentSectionIdx]"
-                        [course]="course"></app-course-section>
+  <app-course-section *ngIf="course && sections[navSideSharedService.selectedSection]"
+                      [section]="sections[navSideSharedService.selectedSection]"
+                      [course]="course"
+                      [sectionIdx]="navSideSharedService.selectedSection"
+                      (ngSectionDeleted)="deleteSection($event)">
+  </app-course-section>
 
 </div>
