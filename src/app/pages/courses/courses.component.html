@@ -1,31 +1,19 @@
 <br><br>
-<div class="row right">
-  <div class="col">
-    <button (click)="addCourse()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
-      Agregar curso
-<!--      <i class="material-icons left">add</i>-->
-      <i class="fa fa-plus left"></i>
-    </button>
+<div id="courses-content">
+  <div *ngIf="authService.signedIn" class="row right-align">
+      <button (click)="addCourse()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+        Agregar curso
+        <i class="fa fa-plus left"></i>
+      </button>
   </div>
-</div>
 
-<br>
-<div class="container">
-  <div class="row s12 cards-container">
-<!--  <div class="row">-->
-<!--    <div class="col s12 cards-container">-->
-<!--      <app-card *ngFor="let course of courses"-->
-<!--                (ngDeleteCard)="deleteCard($event)"-->
-<!--                (ngEditCard)="editCard($event)"-->
-<!--                [redirectTo]="['/cursos', course.uid]"-->
-<!--                [course]="course"></app-card>-->
-
-<!--    </div>-->
-  <app-card *ngFor="let course of courses"
-            (ngDeleteCard)="deleteCard($event)"
-            (ngEditCard)="editCard($event)"
-            [redirectTo]="['/cursos', course.uid]"
-            [course]="course"></app-card>
-
-  </div>
+  <br>
+  <section class="cards">
+    <app-card *ngFor="let course of courses"
+              (ngDeleteCard)="deleteCard($event)"
+              (ngEditCard)="editCard($event)"
+              [redirectTo]="['/cursos', course.uid]"
+              [course]="course"
+              class="animate__animated animate__fadeIn animate__fast"></app-card>
+  </section>
 </div>

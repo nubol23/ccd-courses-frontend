@@ -6,6 +6,7 @@ import {CourseContentService} from "../../services/course-content.service";
 import {ActivatedRoute} from "@angular/router";
 import {CoursesService} from "../../services/courses.service";
 import {NavSideSharedService} from "../../services/nav-side-shared.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-course',
@@ -24,7 +25,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   constructor(public courseContentService: CourseContentService,
               private activatedRoute: ActivatedRoute,
               private coursesService: CoursesService,
-              public navSideSharedService: NavSideSharedService) {
+              public navSideSharedService: NavSideSharedService,
+              public authService: AuthService) {
+    // Revisar por cambios
+    this.navSideSharedService.selectedSection = 0;
   }
 
   ngOnInit(): void {
@@ -119,12 +123,14 @@ export class CourseComponent implements OnInit, OnDestroy {
     if (sectionIdx == this.sections.length-1) {
       // Goto next element
       // this.currentSectionIdx = 0;
-      this.navSideSharedService.selectedSection;
+
+      this.navSideSharedService.selectedSection = 0;
     }
     else {
       // Got to start if at end
       // this.currentSectionIdx = sectionIdx;
-      this.navSideSharedService.selectedSection;
+
+      this.navSideSharedService.selectedSection = sectionIdx;
     }
     // Delete the section
     this.courseContentService.deleteSection(this.sections[sectionIdx].uid)

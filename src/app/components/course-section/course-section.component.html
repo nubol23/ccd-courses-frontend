@@ -1,103 +1,110 @@
-<!--<h3>{{section.sectionName}}</h3>-->
-
-<div class="row left-align">
-  <button (click)="emmitSectionDeleteEvent()" class="waves-effect waves-light btn red lighten-2 animate__animated animate__fadeIn animate__faster">
-    Eliminar sección
-    <i class="fas fa-times left"></i>
-  </button>
-</div>
-
-<div class="row center" *ngIf="section.videoId">
-  <youtube-player
-    [videoId]="section.videoId"
-    height="300px"
-    width="640px"
-    suggestedQuality="highres">
-  </youtube-player>
-</div>
-
-<div class="row left-align" *ngIf="!section.videoId && section.liveUrl">
-  <a [href]="section.liveUrl" target="_blank" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
-    Livestream
-    <i class="fas fa-play left"></i>
-  </a>
-</div>
-
-<div class="row center">
-  <div class="row right-align" style="margin-bottom: 20px">
-    <!--  <button *ngIf="editable" (click)="saveEdit()" class="btn green darken-1">-->
-    <button *ngIf="editable" (click)="saveEdit()" class="btn light-blue lighten-2">
-      <i class="fas fa-save"></i>
-    </button>
-    <button *ngIf="editable" (click)="cancelEdit()" class="btn red lighten-2 right">
-      <i class="fas fa-times"></i>
-    </button>
-
-    <button *ngIf="!editable" (click)="startEdit()" class="btn light-blue lighten-2">
-      <i class="far fa-edit"></i>
+<div class="row" id="section-component">
+  <div *ngIf="authService.signedIn" class="row left-align">
+    <button (click)="emmitSectionDeleteEvent()" class="waves-effect waves-light btn red lighten-2 animate__animated animate__fadeIn animate__faster">
+      Eliminar sección
+      <i class="fas fa-times left"></i>
     </button>
   </div>
 
-  <div *ngIf="editable" class="row">
-    <div class="input-field col s12">
-      <input [(ngModel)]="onEditSectionName" id="section-name" type="text" class="validate">
-      <label for="section-name">Título de la sección</label>
+  <div class="row center" id="section-content">
+    <div class="video-container animate__animated animate__fadeIn animate__fast" *ngIf="section.videoId" id="video-container">
+      <youtube-player
+        [videoId]="section.videoId"
+        suggestedQuality="highres">
+      </youtube-player>
     </div>
-  </div>
-
-  <div *ngIf="editable" class="row">
-    <div class="input-field col s12">
-      <input [(ngModel)]="section.videoId" id="section-video" type="text" class="validate">
-      <label for="section-video">Id del video de youtube</label>
-    </div>
-  </div>
-
-  <div *ngIf="editable" class="row">
-    <div class="input-field col s12">
-      <input [(ngModel)]="section.liveUrl" id="section-livestream" type="text" class="validate">
-      <label for="section-livestream">Url del livestream</label>
-    </div>
-  </div>
-
-  <div class="row">
-    <div *ngIf="editable" class="input-field col s12">
-<!--      <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="variable-textarea"></textarea>-->
-      <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>
-      <label for="explanation">Explicación</label>
+    <br>
+    <div class="row left-align animate__animated animate__fadeIn animate__fast" *ngIf="!section.videoId && section.liveUrl" id="livestream-container">
+      <a [href]="section.liveUrl" target="_blank" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+        Livestream
+        <i class="fas fa-play left"></i>
+      </a>
     </div>
 
-    <div *ngIf="!editable && section.sectionExplanation !== ''" class="col s12">
-      <div class="card">
-        <div class="card-content left-align">
-          <div *ngIf="!editable && section.sectionExplanation !== ''">
-            <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
-            </markdown>
+    <div *ngIf="authService.signedIn" class="row right-align" style="margin-bottom: 20px">
+      <button *ngIf="editable" (click)="saveEdit()" class="btn light-blue lighten-2 animate__animated animate__fadeIn animate__fast">
+        <i class="fas fa-save"></i>
+      </button>
+      <button *ngIf="editable" (click)="cancelEdit()" class="btn red lighten-2 right animate__animated animate__fadeIn animate__fast">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <button *ngIf="!editable" (click)="startEdit()" class="btn light-blue lighten-2 animate__animated animate__fadeIn animate__fast">
+        <i class="far fa-edit"></i>
+      </button>
+    </div>
+
+    <div *ngIf="authService.signedIn && editable">
+      <div class="row animate__animated animate__fadeIn animate__fast">
+        <div class="input-field col s12">
+          <input [(ngModel)]="onEditSectionName" id="section-name" type="text" class="validate">
+          <label for="section-name">Título de la sección</label>
+        </div>
+      </div>
+
+      <div class="row animate__animated animate__fadeIn animate__fast">
+        <div class="input-field col s12">
+          <input [(ngModel)]="section.videoId" id="section-video" type="text" class="validate">
+          <label for="section-video">Id del video de youtube</label>
+        </div>
+      </div>
+
+      <div class="row animate__animated animate__fadeIn animate__fast">
+        <div class="input-field col s12">
+          <input [(ngModel)]="section.liveUrl" id="section-livestream" type="text" class="validate">
+          <label for="section-livestream">Url del livestream</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div *ngIf="authService.signedIn && editable" class="input-field col s12 animate__animated animate__fadeIn animate__fast">
+        <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>
+        <label for="explanation">Explicación</label>
+      </div>
+
+      <div *ngIf="!editable && section.sectionExplanation !== ''" class="col s12">
+        <div class="card animate__animated animate__fadeIn animate__fast">
+          <div class="card-content left-align">
+            <div *ngIf="!editable && section.sectionExplanation !== ''">
+              <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
+              </markdown>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="row animate__animated animate__fadeIn animate__fast" id="code-fragment">
+      <div *ngIf="authService.signedIn" class="row" id="upload-delete-task">
+        <div class="row right-align">
+        <span class="btn btn-file light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+          Subir ejericicio
+          <i class="fas fa-code left"></i>
+          <input type="file" (change)="uploadProgrammingAssignment($event)">
+        </span>
+
+          <button *ngIf="section.programmingAssignmentUrl"
+                  (click)="deleteProgrammingAssignment()"
+                  class="btn red lighten-2 right animate__animated animate__fadeIn animate__fast">
+            Borrar ejercicio
+            <i class="fas fa-times left"></i>
+          </button>
+        </div>
+
+        <div class="row" *ngIf="assignmentFile && assignmentFile.uploading">
+          <div class="progress" >
+            <div class="determinate custom-secondary lighten-1" [ngStyle]="{'width': assignmentFile.progress + '%'}"></div>
+          </div>
+        </div>
+      </div>
+
+      <iframe class="animate__animated animate__fadeIn animate__fast"
+              *ngIf="section.programmingAssignmentUrl"
+              [src]="section.programmingAssignmentUrl | safeurl"
+              width="100%"
+              height="500px"
+              style="overflow: hidden; border: none"></iframe>
+    </div>
   </div>
 </div>
-
-<div class="row right-align">
-  <span class="btn btn-file light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
-    <i class="fas fa-code"></i>
-    Subir
-    <input type="file" (change)="uploadProgrammingAssignment($event)">
-  </span>
-
-  <button *ngIf="section.programmingAssignmentUrl" (click)="deleteProgrammingAssignment()" class="btn red lighten-2 right">
-    <i class="fas fa-times"></i>
-  </button>
-</div>
-<div class="row" *ngIf="assignmentFile && assignmentFile.uploading">
-  <div class="progress" >
-    <div class="determinate custom-secondary lighten-1" [ngStyle]="{'width': assignmentFile.progress + '%'}"></div>
-  </div>
-</div>
-
-<iframe *ngIf="section.programmingAssignmentUrl"
-        [src]="section.programmingAssignmentUrl | safeurl"
-        width="100%"
-        height="500px"
-        style="overflow: hidden; border: none"></iframe>

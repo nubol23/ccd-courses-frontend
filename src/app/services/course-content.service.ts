@@ -210,6 +210,7 @@ export class CourseContentService {
 
 
   deleteFile(section: Section) {
+    console.log(`${this.folderName}/${section.uid+'.html'}`);
     return firebase.storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
       .then(res => {
         section.programmingAssignmentUrl = "";

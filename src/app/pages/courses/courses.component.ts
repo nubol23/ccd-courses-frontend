@@ -4,6 +4,7 @@ import {Course} from "../../models/course";
 
 import Swal from 'sweetalert2';
 import {CourseContentService} from "../../services/course-content.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-courses',
@@ -15,7 +16,8 @@ export class CoursesComponent implements OnInit {
   courses: Course[] = [];
 
   constructor(public courseService: CoursesService,
-              private courseContentService: CourseContentService) { }
+              private courseContentService: CourseContentService,
+              public authService: AuthService) { }
 
   ngOnInit(): void {
     // Load all the courses

@@ -1,1 +1,38 @@
-<p>login works!</p>
+<div class="card animate__animated animate__fadeIn animate__faster center-custom">
+  <div class="card-content">
+    <div class="row">
+      <form class="col s12" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input [(ngModel)]="email"
+                   required
+                   id="email"
+                   name="email"
+                   type="email"
+                   class="validate">
+            <label for="email">Email</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input [(ngModel)]="password"
+                   required
+                   id="password"
+                   type="password"
+                   name="password"
+                   class="validate">
+            <label for="password">Contraseña</label>
+          </div>
+        </div>
+
+        <div class="row center">
+          <button class="btn waves-effect waves-light custom-secondary lighten-1" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

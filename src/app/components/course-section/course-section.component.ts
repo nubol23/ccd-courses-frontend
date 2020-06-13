@@ -15,6 +15,7 @@ import {init} from "protractor/built/launcher";
 import Swal from "sweetalert2";
 import {Assignment, AssignmentFile} from "../../models/assignment";
 import {Course} from "../../models/course";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-course-section',
@@ -35,7 +36,8 @@ export class CourseSectionComponent implements OnInit ,OnChanges, AfterViewCheck
   onEditSectionName: string;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private courseContentService: CourseContentService) {
+              private courseContentService: CourseContentService,
+              public authService: AuthService) {
   }
 
   ngOnInit(): void {

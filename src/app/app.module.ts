@@ -19,6 +19,8 @@ import {AngularFireModule} from "@angular/fire";
 import {environment} from "../environments/environment";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {AngularFireAuthModule} from "@angular/fire/auth";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     MarkdownModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
-    DragDropModule
+    DragDropModule,
+    AngularFireAuthModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
