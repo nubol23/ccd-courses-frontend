@@ -54,10 +54,26 @@ export class CourseSectionComponent implements OnInit, AfterViewChecked {
     // console.log(this.course);
   }
 
+  processMarkdownLatex(text: string) {
+    // Temporal ngx-markdown single character latex fix.
+    let matches = text.match(/\$[a-z]\$|\$[0-9]\$|\$[A-Z]\$/g);
+
+    if (matches) {
+      for (let match of matches) {
+        let processed = "$\\text{ }" + match.substr(1, match.length);
+        text = text.replace(match, processed);
+      }
+    }
+
+    return text;
+  }
+
   saveEdit() {
     this.editable = false;
 
     this.section.sectionName = (' ' + this.onEditSectionName).slice(1);
+
+    this.section.sectionExplanation = this.processMarkdownLatex(this.section.sectionExplanation);
 
     Swal.fire({
       allowOutsideClick: false,

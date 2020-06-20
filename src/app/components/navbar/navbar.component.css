@@ -9,3 +9,17 @@ a.active{
 .brand-logo {
   padding-left: 15px!important;
 }
+
+/*Mid size*/
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .nav-height-offset {
+    height: 114px
+  }
+}
+
+/*Small size*/
+@media only screen and (max-width: 600px) {
+  .nav-height-offset {
+    height: 104px
+  }
+}

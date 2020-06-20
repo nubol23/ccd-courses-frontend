@@ -62,7 +62,7 @@
       <div *ngIf="authService.signedIn && editable" class="input-field col s12 animate__animated animate__fadeIn animate__fast">
 <!--        <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>-->
 <!--        <label for="explanation">Explicación</label>-->
-        <div style="height: 250px">
+        <div style="height: 400px">
           <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="section.sectionExplanation"></ngx-monaco-editor>
         </div>
       </div>
@@ -71,7 +71,8 @@
         <div class="card animate__animated animate__fadeIn animate__fast">
           <div class="card-content left-align">
             <div *ngIf="!editable && section.sectionExplanation !== ''">
-              <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">
+<!--              <markdown ngPreserveWhitespaces katex [data]="section.sectionExplanation">-->
+              <markdown katex [data]="section.sectionExplanation">
               </markdown>
             </div>
           </div>
@@ -107,8 +108,9 @@
               *ngIf="section.programmingAssignmentUrl"
               [src]="section.programmingAssignmentUrl | safeurl"
               width="100%"
-              height="500px"
-              style="overflow: hidden; border: none"></iframe>
+              height="400px"
+              style="overflow: hidden; border: none;"></iframe>
+
     </div>
   </div>
 </div>

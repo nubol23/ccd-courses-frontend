@@ -1,5 +1,3 @@
-<div class="row show-on-small show-on-medium hide-on-med-and-up" style="height: 20px"></div>
-
 <app-sidenav [selectedSection]="navSideSharedService.selectedSection"
              [courseId]="courseId"
              [sections]="sections"
@@ -27,19 +25,20 @@
   </div>
 </div>
 
-<div class="container">
+<!--<div class="container section-content">-->
+<!--<div class="container">-->
 <!--    <app-course-section *ngIf="course && sections[currentSectionIdx]"-->
 <!--                        [section]="sections[currentSectionIdx]"-->
 <!--                        [course]="course"-->
 <!--                        [sectionIdx]="currentSectionIdx"-->
 <!--                        (ngSectionDeleted)="deleteSection($event)">-->
 <!--    </app-course-section>-->
-
+<div class="content">
   <app-course-section *ngIf="course && sections[navSideSharedService.selectedSection]"
                       [section]="sections[navSideSharedService.selectedSection]"
                       [course]="course"
                       [sectionIdx]="navSideSharedService.selectedSection"
                       (ngSectionDeleted)="deleteSection($event)">
   </app-course-section>
-
 </div>
+<!--</div>-->

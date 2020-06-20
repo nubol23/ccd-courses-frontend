@@ -39,3 +39,18 @@
 
 /*height="300px"*/
 /*width="640px"*/
+
+markdown::ng-deep p {
+  margin-bottom: 15px!important;
+}
+
+markdown::ng-deep ul{
+  margin-left: 20px;
+  list-style-type: initial!important;
+}
+
+markdown::ng-deep li {
+  list-style-type: initial!important;
+}
+
+/*https://github.com/jfcere/ngx-markdown/issues/56*/
