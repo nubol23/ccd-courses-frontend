@@ -6,7 +6,8 @@
     </button>
   </div>
 
-  <div class="row center" id="section-content">
+<!--  <div class="row center" id="section-content">-->
+  <div class="row" id="section-content">
     <div class="video-container animate__animated animate__fadeIn animate__fast" *ngIf="section.videoId" id="video-container">
       <youtube-player
         [videoId]="section.videoId"
@@ -59,8 +60,11 @@
 
     <div class="row">
       <div *ngIf="authService.signedIn && editable" class="input-field col s12 animate__animated animate__fadeIn animate__fast">
-        <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>
-        <label for="explanation">Explicación</label>
+<!--        <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>-->
+<!--        <label for="explanation">Explicación</label>-->
+        <div style="height: 250px">
+          <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="section.sectionExplanation"></ngx-monaco-editor>
+        </div>
       </div>
 
       <div *ngIf="!editable && section.sectionExplanation !== ''" class="col s12">

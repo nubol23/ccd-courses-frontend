@@ -38,7 +38,7 @@ export class CourseComponent implements OnInit, OnDestroy {
 
     this.courseContentService.getSectionList(this.courseId)
       .then(res => {
-        console.log('Ya cargué');
+        // console.log('Ya cargué');
         this.sections = this.courseContentService.sections;
       })
 
@@ -86,9 +86,10 @@ export class CourseComponent implements OnInit, OnDestroy {
               this.responseDialog(resp);
             })
         }
-        else
+        else {
           // We want to edit a section
-          console.log('Editando', values);
+          // console.log('Editando', values);
+        }
       }
     })
   }

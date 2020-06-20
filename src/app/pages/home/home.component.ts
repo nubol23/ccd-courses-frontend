@@ -9,8 +9,8 @@ export class HomeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log('Home')
-  }
+  homeMd = '../../../assets/home.md';
+
+  ngOnInit(): void {}
 
 }

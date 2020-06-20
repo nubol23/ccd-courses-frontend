@@ -1,13 +1,13 @@
-<br><br>
+<div class="row show-on-small show-on-medium hide-on-med-and-up" style="height: 40px"></div>
+
 <div id="courses-content">
-  <div *ngIf="authService.signedIn" class="row right-align">
+  <div *ngIf="authService.signedIn" class="row right-align" style="margin-top: 30px">
       <button (click)="addCourse()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
         Agregar curso
         <i class="fa fa-plus left"></i>
       </button>
   </div>
 
-  <br>
   <section class="cards">
     <app-card *ngFor="let course of courses"
               (ngDeleteCard)="deleteCard($event)"

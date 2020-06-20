@@ -14,10 +14,14 @@ export class CourseContentService {
   sectionsIndexesBackup: number[] = [];
   sections: Section[] = [];
   folderName: string = 'exercises'
+  // loadingSections: boolean;
+  loadingSections = false;
 
   constructor(private afs: AngularFirestore) {}
 
   getSectionList(courseId: string) {
+    this.loadingSections = true;
+
     // while (this.sections.length) { this.sections.pop(); }
     this.cleanSectionsList();
     return this.afs.collection('sections', ref =>
@@ -32,10 +36,11 @@ export class CourseContentService {
           this.sections.push(section)
         })
 
+        this.loadingSections = false;
         return {state: true, msg: 'Cargado correctamente'}
       })
       .catch((err) => {
-        console.log('AA:', err);
+        // console.log('AA:', err);
         return {state: false, msg: 'Error al cargar secciones'}
       });
   }
@@ -58,6 +63,7 @@ export class CourseContentService {
       .get().pipe(take(1)).toPromise()
       .then((querySnapshot) => {
         if (querySnapshot.size > 0) {
+          // If there is already a section for that course with that name
           return {state: false, msg: 'La sección ya existe'}
         }
         else {
@@ -118,7 +124,7 @@ export class CourseContentService {
   }
 
   deleteSections(courseId) {
-    console.log('Entre');
+    // console.log('Entre');
 
     return this.getSectionList(courseId)
       .then(res => {
@@ -126,7 +132,7 @@ export class CourseContentService {
 
           let flag = true;
           for (let tempSection of this.sections) {
-            console.log('Bucle');
+            // console.log('Bucle');
             this.deleteSection(tempSection.uid)
               .then(resp => {
                 flag = flag && resp['state'];
@@ -153,7 +159,7 @@ export class CourseContentService {
         return {state: true, msg: 'Actualizado correctamente'}
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         return {state: false, msg: 'Error al actualizar'}
       });
   }
@@ -172,7 +178,7 @@ export class CourseContentService {
       },
       (error) => {
         // return {state: false, msg: 'Error al cargar archivo'};
-        console.log('Error al subir', error)
+        // console.log('Error al subir', error)
         Swal.fire({
           title: 'Error',
           text: 'Error al cargar el archivo',
@@ -182,7 +188,7 @@ export class CourseContentService {
         })
       },
       () => {
-        console.log('Documento cargado correctamente');
+        // console.log('Documento cargado correctamente');
         // return uploadTask.snapshot.ref.getDownloadURL()
         uploadTask.snapshot.ref.getDownloadURL()
           .then((url) => {
@@ -210,7 +216,7 @@ export class CourseContentService {
 
 
   deleteFile(section: Section) {
-    console.log(`${this.folderName}/${section.uid+'.html'}`);
+    // console.log(`${this.folderName}/${section.uid+'.html'}`);
     return firebase.storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
       .then(res => {
         section.programmingAssignmentUrl = "";

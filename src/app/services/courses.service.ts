@@ -12,17 +12,27 @@ import {CourseContentService} from "./course-content.service";
 export class CoursesService {
 
   courses: Course[] = [];
+  loadingCourses: boolean;
 
   constructor(private afs: AngularFirestore,
               private courseContentService: CourseContentService) {
-    // Load all the courses on startup
-    // this.afs.collection('courses').valueChanges()
-    //   .pipe(take(1))  // take operator automatically unsubscribes after passed count
-    //   .subscribe((coursesSnapshot: Course[]) => {
-    //     coursesSnapshot.forEach((coursesData: any) => {
-    //       this.courses.push(coursesData);
-    //     })
+    // this.loadingCourses = true;
+    //
+    // this.afs.collection('courses').get().toPromise()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       // @ts-ignore
+    //       let course: Course = doc.data();
+    //       course.uid = doc.id;
+    //       this.courses.push(course);
+    //     });
+    //     this.loadingCourses = false;
     //   });
+  }
+
+  loadCourses() {
+    this.loadingCourses = true;
+
     this.afs.collection('courses').get().toPromise()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -30,9 +40,11 @@ export class CoursesService {
           let course: Course = doc.data();
           course.uid = doc.id;
           this.courses.push(course);
-        })
-      })
+        });
+        this.loadingCourses = false;
+      });
   }
+
 
   // https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1200px-ISO_C%2B%2B_Logo.svg.png
   addCourse(course: Course) {
@@ -42,7 +54,9 @@ export class CoursesService {
     //   .then(doc => {
     //     if (doc.exists) {
     //       return {state: false, msg: 'El curso ya existe'}
-    return this.afs.collection('courses', ref => ref.where('uid', '==', course.uid))
+
+    // return this.afs.collection('courses', ref => ref.where('uid', '==', course.uid))
+    return this.afs.collection('courses', ref => ref.where('title', '==', course.title))
       .get().pipe(take(1)).toPromise()
       .then((querySnapshot) => {
         if (querySnapshot.size > 0) {
@@ -136,7 +150,7 @@ export class CoursesService {
           return doc.data();
         }
         else {
-          console.log('Falle: ' + courseId)
+          // console.log('Falle: ' + courseId)
           return new Course('', '', '');
         }
       })

@@ -22,12 +22,13 @@ export class AuthService {
     // this.readToken();
 
     // firebase.auth().setPersistence()
-    console.log('Inicie');
+
+    // console.log('Inicie');
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.signedIn = true;
-        console.log('signed in', this.signedIn);
+        // console.log('signed in', this.signedIn);
       }
       else {
         this.signedIn = false;

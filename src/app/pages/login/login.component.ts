@@ -20,12 +20,12 @@ export class LoginComponent implements OnInit {
               // private router: Router) { }
 
   ngOnInit(): void {
-    console.log('Login')
+    // console.log('Login')
   }
 
   login(form: NgForm) {
     if (form.invalid) {
-      console.log('invalido');
+      // console.log('invalido');
       return;
     }
 
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.email, this.password)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         Swal.close();
         // this.router.navigate(['/cursos'])
         //   .then(res => res);

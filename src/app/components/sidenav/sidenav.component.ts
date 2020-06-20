@@ -10,7 +10,7 @@ import {NavSideSharedService} from "../../services/nav-side-shared.service";
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class SidenavComponent implements OnInit{
 
   @Input() onNavbarEdit: boolean;
   @Input() selectedSection: number;
@@ -27,9 +27,6 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnInit(): void {
   }
 
-  ngOnDestroy() {
-  }
-
   emitSection(sectionIndex: number) {
     this.navSideSharedService.selectedSection = sectionIndex;
 
@@ -41,7 +38,7 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewChecked {
     moveItemInArray(this.sections, event.previousIndex, event.currentIndex);
   }
 
-  ngAfterViewChecked() {
+  // ngAfterViewChecked() {
     // // Inicializar sidenav
     // try {
     //   let el = document.getElementsByClassName('.sidenav');
@@ -51,5 +48,5 @@ export class SidenavComponent implements OnInit, OnDestroy, AfterViewChecked {
     // catch (e) {
     //   // Aún no existe
     // }
-  }
+  // }
 }

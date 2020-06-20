@@ -1,3 +1,5 @@
+<div class="row show-on-small show-on-medium hide-on-med-and-up" style="height: 20px"></div>
+
 <app-sidenav [selectedSection]="navSideSharedService.selectedSection"
              [courseId]="courseId"
              [sections]="sections"
@@ -6,18 +8,19 @@
              class="animate__animated animate__fadeIn animate__fast"></app-sidenav>
 
 <div class="row animate__animated animate__fadeIn animate__fast">
-  <br><br>
-  <div class="col left-align">
-    <button *ngIf="authService.signedIn && !onNavbarEdit && sections.length > 1" (click)="startNavbarEdit()" class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+  <div *ngIf="authService.signedIn" class="col left-align" style="margin-top: 30px;">
+    <button *ngIf="!onNavbarEdit && sections.length > 1"
+            (click)="startNavbarEdit()"
+            class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
       Reordenar
       <i class="fas fa-list left"></i>
     </button>
-    <button *ngIf="authService.signedIn && onNavbarEdit" (click)="endNavbarEdit()" class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
+    <button  *ngIf="onNavbarEdit" (click)="endNavbarEdit()" class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
       <i class="fas fa-save"></i>
     </button>
   </div>
-  <div class="col right">
-    <button *ngIf="authService.signedIn" (click)="addSection()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+  <div class="col right" *ngIf="authService.signedIn" style="margin-top: 30px">
+    <button (click)="addSection()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
       Agregar sección
       <i class="fa fa-plus left"></i>
     </button>
@@ -25,7 +28,6 @@
 </div>
 
 <div class="container">
-  <br><br>
 <!--    <app-course-section *ngIf="course && sections[currentSectionIdx]"-->
 <!--                        [section]="sections[currentSectionIdx]"-->
 <!--                        [course]="course"-->

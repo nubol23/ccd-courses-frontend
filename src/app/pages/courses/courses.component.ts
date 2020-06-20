@@ -17,7 +17,10 @@ export class CoursesComponent implements OnInit {
 
   constructor(public courseService: CoursesService,
               private courseContentService: CourseContentService,
-              public authService: AuthService) { }
+              public authService: AuthService) {
+    if (this.courseService.courses.length === 0)
+      this.courseService.loadCourses();
+  }
 
   ngOnInit(): void {
     // Load all the courses

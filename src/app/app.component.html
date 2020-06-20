@@ -1,6 +1,9 @@
 <app-navbar></app-navbar>
 
-<!--<br><br>-->
+<div *ngIf="courseService.loadingCourses || courseContentService.loadingSections" class="progress">
+  <div class="indeterminate"></div>
+</div>
+
 <div class="container">
   <router-outlet></router-outlet>
 </div>

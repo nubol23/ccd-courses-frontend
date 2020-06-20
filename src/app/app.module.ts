@@ -21,6 +21,8 @@ import {AngularFirestoreModule} from "@angular/fire/firestore";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {HttpClientModule} from "@angular/common/http";
+import {MonacoEditorModule} from "ngx-monaco-editor";
+import { ListformatPipe } from './pipes/listformat.pipe';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {HttpClientModule} from "@angular/common/http";
     SidenavComponent,
     CourseSectionComponent,
     SafeurlPipe,
+    ListformatPipe,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import {HttpClientModule} from "@angular/common/http";
     AngularFirestoreModule,
     DragDropModule,
     AngularFireAuthModule,
-    HttpClientModule
+    HttpClientModule,
+    MonacoEditorModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

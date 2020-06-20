@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
         Swal.showLoading();
         this.authService.logout()
           .then(res => {
-            console.log(res);
+            // console.log(res);
             Swal.close();
           })
           .catch(err => {

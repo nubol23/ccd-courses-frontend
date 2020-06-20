@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "ccd-simple",
+    "public": "./dist/CourseAppMaterialize",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

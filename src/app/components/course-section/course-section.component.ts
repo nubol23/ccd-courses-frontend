@@ -22,7 +22,7 @@ import {AuthService} from "../../services/auth.service";
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.css']
 })
-export class CourseSectionComponent implements OnInit ,OnChanges, AfterViewChecked {
+export class CourseSectionComponent implements OnInit, AfterViewChecked {
 
   @Input() sectionIdx: number;
   @Input() section: Section;
@@ -35,6 +35,16 @@ export class CourseSectionComponent implements OnInit ,OnChanges, AfterViewCheck
   onEditBackupSection = Section;
   onEditSectionName: string;
 
+  editorOptions = {
+    theme: 'vs-light',
+    language: 'markdown',
+    minimap: {
+      enabled: false
+    },
+    wordWrap: 'wordWrapColumn',
+    wordWrapColumn: 80
+  };
+
   constructor(private activatedRoute: ActivatedRoute,
               private courseContentService: CourseContentService,
               public authService: AuthService) {
@@ -46,17 +56,6 @@ export class CourseSectionComponent implements OnInit ,OnChanges, AfterViewCheck
 
   saveEdit() {
     this.editable = false;
-
-    // Post edition to DB
-    // let newSection = new Section(
-    //   this.section.courseId,
-    //   this.section.sectionName,
-    //   this.section.videoId,
-    //   this.section.liveUrl
-    // );
-    // newSection.uid = this.section.uid;
-    // newSection.sectionExplanation = this.section.sectionExplanation;
-    // newSection.programmingAssignmentUrl = this.section.programmingAssignmentUrl;
 
     this.section.sectionName = (' ' + this.onEditSectionName).slice(1);
 
@@ -87,8 +86,6 @@ export class CourseSectionComponent implements OnInit ,OnChanges, AfterViewCheck
     // Restore object
     this.section = JSON.parse(JSON.stringify(this.onEditBackupSection));
   }
-
-  ngOnChanges(changes: SimpleChanges) {}
 
   uploadProgrammingAssignment(event) {
     // this.fileToUpload = event.target.files[0];
