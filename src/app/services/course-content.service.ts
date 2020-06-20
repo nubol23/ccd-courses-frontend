@@ -3,8 +3,9 @@ import {Section} from "../models/section";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {take} from "rxjs/operators";
 import Swal from "sweetalert2";
-import * as firebase from "firebase";
+// import * as firebase from "firebase";
 import {AssignmentFile} from "../models/assignment";
+import {storage} from "firebase";
 
 @Injectable({
   providedIn: 'root'
@@ -165,15 +166,19 @@ export class CourseContentService {
   }
 
   uploadFile(section: Section, html: AssignmentFile) {
-    const storageRef = firebase.storage().ref();
+    // const storageRef = firebase.storage().ref();
+    const storageRef = storage().ref();
 
     html.uploading = true;
 
-    const uploadTask: firebase.storage.UploadTask = storageRef.child(`${this.folderName}/${html.filename}`)
+    // const uploadTask: firebase.storage.UploadTask = storageRef.child(`${this.folderName}/${html.filename}`)
+    const uploadTask: storage.UploadTask = storageRef.child(`${this.folderName}/${html.filename}`)
       .put(html.file);
 
-    return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot: firebase.storage.UploadTaskSnapshot) => {
+    // return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    return uploadTask.on(storage.TaskEvent.STATE_CHANGED,
+      // (snapshot: firebase.storage.UploadTaskSnapshot) => {
+      (snapshot: storage.UploadTaskSnapshot) => {
         html.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       },
       (error) => {
@@ -217,7 +222,8 @@ export class CourseContentService {
 
   deleteFile(section: Section) {
     // console.log(`${this.folderName}/${section.uid+'.html'}`);
-    return firebase.storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
+    // return firebase.storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
+    return storage().ref().child(`${this.folderName}/${section.uid+'.html'}`).delete()
       .then(res => {
         section.programmingAssignmentUrl = "";
         return this.editSection(section)

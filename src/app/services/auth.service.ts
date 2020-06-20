@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import {auth} from "firebase";
 
-import * as firebase from "firebase";
-import {environment} from "../../environments/environment";
+// import * as firebase from "firebase";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,8 @@ export class AuthService {
 
     // console.log('Inicie');
 
-    firebase.auth().onAuthStateChanged(user => {
+    // firebase.auth().onAuthStateChanged(user => {
+    auth().onAuthStateChanged(user => {
       if (user) {
         this.signedIn = true;
         // console.log('signed in', this.signedIn);
@@ -49,11 +50,13 @@ export class AuthService {
     //     return resp;
     //   }));
 
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    // return firebase.auth().signInWithEmailAndPassword(email, password);
+    return auth().signInWithEmailAndPassword(email, password);
   }
 
   logout() {
-    return firebase.auth().signOut();
+    // return firebase.auth().signOut();
+    return auth().signOut();
   }
 
   // saveToken(idToken: string) {
