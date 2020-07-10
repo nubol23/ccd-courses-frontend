@@ -27,7 +27,7 @@
             "styles": [
               "src/assets/materialize-src/sass/materialize.scss",
               "src/styles.css",
-              "node_modules/prismjs/themes/prism-dracula.css",
+              "node_modules/prismjs/themes/dracula-prism.css",
               "node_modules/katex/dist/katex.min.css"
             ],
             "scripts": [

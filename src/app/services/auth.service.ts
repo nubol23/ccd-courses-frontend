@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {auth} from "firebase";
+import {QueryUser, User} from "../models/user";
+import {AngularFirestore} from "@angular/fire/firestore";
+import {query} from "@angular/animations";
+// import 'firebase/auth';
 
 // import * as firebase from "firebase";
 
@@ -9,33 +13,49 @@ import {auth} from "firebase";
   providedIn: 'root'
 })
 export class AuthService {
+  // signedIn: boolean;
+  loggedUser: User = new User('', '', '', '', false);
 
-  // private url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?';
-  // private apikey = 'AIzaSyDQKULzc31f6_rCxC2N9HRuTmEo7nKutuE';
-  // userToken: string;
-  signedIn: boolean;
+  constructor(private http: HttpClient,
+              private afs: AngularFirestore) {
 
-  constructor(private http: HttpClient) {
-    // firebase.initializeApp(environment.firebaseConfig);\
+    // this.loggedUser = new User('', '', '', '', false);
 
-    // console.log(firebase.auth());
-    // this.readToken();
-
-    // firebase.auth().setPersistence()
-
-    // console.log('Inicie');
-
-    // firebase.auth().onAuthStateChanged(user => {
+    // Check any change in the user state
     auth().onAuthStateChanged(user => {
       if (user) {
-        this.signedIn = true;
-        // console.log('signed in', this.signedIn);
+        this.loggedUser.signedIn = true;
+        this.getExtendedUserInfo(user.uid).then(queryUser => {
+          this.loggedUser.uid = user.uid;
+          this.loggedUser.mail = user.email;
+          this.loggedUser.name = queryUser.name;
+          this.loggedUser.role = queryUser.role;
+          this.loggedUser.finishedSections = queryUser.finishedSections;
+          console.log(this.loggedUser);
+        })
+        // this.signedIn = true;
       }
       else {
-        this.signedIn = false;
+        // this.signedIn = false;
+        this.loggedUser.signedIn = false;
       }
     });
   }
+
+  getExtendedUserInfo(uid: string) {
+    return this.afs.collection('users', ref => ref.where('uid', '==', uid))
+      .get().pipe(take(1)).toPromise()
+      .then((querySnapshot) => {
+        let queryUser: QueryUser;
+        querySnapshot.forEach((doc) => {
+          // @ts-ignore
+          // Only extract the first element
+          queryUser = doc.data();
+        })
+        return queryUser;
+      });
+  }
+
 
   login(email: string, password: string) {
     // let authData = {
@@ -57,6 +77,10 @@ export class AuthService {
   logout() {
     // return firebase.auth().signOut();
     return auth().signOut();
+  }
+
+  getToken() {
+    return auth().currentUser.getIdToken(true);
   }
 
   // saveToken(idToken: string) {

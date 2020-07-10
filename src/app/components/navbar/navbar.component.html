@@ -15,11 +15,13 @@
         <li routerLinkActive="active">
           <a routerLinkActive="active" routerLink="cursos">Cursos</a>
         </li>
-        <li *ngIf="!authService.signedIn" routerLinkActive="active">
+<!--        <li *ngIf="!authService.signedIn" routerLinkActive="active">-->
+        <li *ngIf="!authService.loggedUser.signedIn" routerLinkActive="active">
           <a routerLinkActive="active" routerLink="login">Login</a>
         </li>
-        <li *ngIf="authService.signedIn" routerLinkActive="active" (click)="logout()">
-          <a>Logout</a>
+<!--        <li *ngIf="authService.signedIn" routerLinkActive="active" (click)="logout()">-->
+        <li *ngIf="authService.loggedUser.signedIn" routerLinkActive="active" (click)="logout()">
+          <a>({{authService.loggedUser.name}}) Logout</a>
         </li>
       </ul>
     </div>
@@ -68,11 +70,13 @@
   <li *ngIf="courseContentService.sections.length > 0">
     <div class="divider" style="margin: 10px 0 0 0;"></div>
   </li>
-  <li *ngIf="!authService.signedIn" routerLinkActive="active">
+<!--  <li *ngIf="!authService.signedIn" routerLinkActive="active">-->
+  <li *ngIf="!authService.loggedUser.signedIn" routerLinkActive="active">
     <a routerLinkActive="active" routerLink="login">Login</a>
   </li>
-  <li *ngIf="authService.signedIn" routerLinkActive="active" (click)="logout()">
-    <a>Logout</a>
+<!--  <li *ngIf="authService.signedIn" routerLinkActive="active" (click)="logout()">-->
+  <li *ngIf="authService.loggedUser.signedIn" routerLinkActive="active" (click)="logout()">
+    <a>({{authService.loggedUser.name}}) Logout</a>
   </li>
 
 </ul>

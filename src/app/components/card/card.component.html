@@ -1,5 +1,6 @@
 <div class="card">
-  <div *ngIf="authService.signedIn" class="row">
+<!--  <div *ngIf="authService.signedIn" class="row">-->
+  <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="row">
     <div class="col left-align">
       <button (click)="editCard()" class="btn light-blue lighten-2">
         <i class="far fa-edit"></i>

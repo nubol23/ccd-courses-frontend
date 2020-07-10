@@ -11,6 +11,9 @@ export class Section {
   sectionExplanation: string;
   programmingAssignmentUrl: string;
   creationDate: Date;
+  colabAssignmentUrl: string;
+  testCases: string;
+  evaluable: boolean;
 
   constructor(courseId: string, sectionName: string, videoId: string, liveUrl: string,
               creationDate?: Date, sectionExplanation?: string, programmingAssignmentUrl?: string, uid?: string) {

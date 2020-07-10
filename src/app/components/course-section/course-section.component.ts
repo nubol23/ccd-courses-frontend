@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import {Assignment, AssignmentFile} from "../../models/assignment";
 import {Course} from "../../models/course";
 import {AuthService} from "../../services/auth.service";
+import {Clipboard} from "@angular/cdk/clipboard";
 
 @Component({
   selector: 'app-course-section',
@@ -45,9 +46,12 @@ export class CourseSectionComponent implements OnInit, AfterViewChecked {
     wordWrapColumn: 80
   };
 
+  token: string;
+
   constructor(private activatedRoute: ActivatedRoute,
               private courseContentService: CourseContentService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private clipboard: Clipboard) {
   }
 
   ngOnInit(): void {

@@ -1,5 +1,6 @@
 <div class="row" id="section-component">
-  <div *ngIf="authService.signedIn" class="row left-align">
+<!--  <div *ngIf="authService.signedIn" class="row left-align">-->
+  <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="row left-align">
     <button (click)="emmitSectionDeleteEvent()" class="waves-effect waves-light btn red lighten-2 animate__animated animate__fadeIn animate__faster">
       Eliminar sección
       <i class="fas fa-times left"></i>
@@ -21,8 +22,18 @@
         <i class="fas fa-play left"></i>
       </a>
     </div>
+    <br>
+    <div class="row left-align animate__animated animate__fadeIn animate__fast"
+         *ngIf="section.colabAssignmentUrl && authService.loggedUser.signedIn"
+         id="colab-url-container">
+      <a [href]="section.colabAssignmentUrl" target="_blank" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
+        Notebook
+        <i class="fas fa-code left"></i>
+      </a>
+    </div>
 
-    <div *ngIf="authService.signedIn" class="row right-align" style="margin-bottom: 20px">
+<!--    <div *ngIf="authService.signedIn" class="row right-align" style="margin-bottom: 20px">-->
+    <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="row right-align" style="margin-bottom: 20px">
       <button *ngIf="editable" (click)="saveEdit()" class="btn light-blue lighten-2 animate__animated animate__fadeIn animate__fast">
         <i class="fas fa-save"></i>
       </button>
@@ -35,7 +46,8 @@
       </button>
     </div>
 
-    <div *ngIf="authService.signedIn && editable">
+<!--    <div *ngIf="authService.signedIn && editable">-->
+    <div *ngIf="authService.loggedUser.signedIn && editable && authService.loggedUser.role=='admin'">
       <div class="row animate__animated animate__fadeIn animate__fast">
         <div class="input-field col s12">
           <input [(ngModel)]="onEditSectionName" id="section-name" type="text" class="validate">
@@ -59,7 +71,8 @@
     </div>
 
     <div class="row">
-      <div *ngIf="authService.signedIn && editable" class="input-field col s12 animate__animated animate__fadeIn animate__fast">
+<!--      <div *ngIf="authService.signedIn && editable" class="input-field col s12 animate__animated animate__fadeIn animate__fast">-->
+      <div *ngIf="authService.loggedUser.signedIn && editable && authService.loggedUser.role=='admin'" class="input-field col s12 animate__animated animate__fadeIn animate__fast">
 <!--        <textarea id="explanation" [(ngModel)]="section.sectionExplanation" class="materialize-textarea"></textarea>-->
 <!--        <label for="explanation">Explicación</label>-->
         <div style="height: 400px">
@@ -80,8 +93,40 @@
       </div>
     </div>
 
+    <div *ngIf="authService.loggedUser.signedIn && editable && authService.loggedUser.role=='admin'">
+      <h4>Tarea de programación con Colaboratory</h4>
+      <div class="row">
+        <div class="switch">
+          <label>
+            Evaluable
+            <input [(ngModel)]="section.evaluable" type="checkbox">
+            <span class="lever"></span>
+            No Evaluable
+          </label>
+        </div>
+      </div>
+
+      <div class="row animate__animated animate__fadeIn animate__fast">
+        <div class="input-field col s12">
+          <input [(ngModel)]="section.colabAssignmentUrl" id="colab-url" type="text" class="validate">
+          <label for="colab-url">Url del notebook</label>
+        </div>
+      </div>
+
+      <h5>Datos de prueba en formato JSON (ID: {{section.uid}})</h5>
+      <div class="row">
+        <div style="height: 200px">
+          <ngx-monaco-editor style="height: 100%"
+                             [options]="{theme:'vs-light',language:'json',minimap:{enabled: false},wordWrap:'wordWrapColumn',wordWrapColumn: 80}"
+                             [(ngModel)]="section.testCases">
+          </ngx-monaco-editor>
+        </div>
+      </div>
+    </div>
+
     <div class="row animate__animated animate__fadeIn animate__fast" id="code-fragment">
-      <div *ngIf="authService.signedIn" class="row" id="upload-delete-task">
+<!--      <div *ngIf="authService.signedIn" class="row" id="upload-delete-task">-->
+      <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="row" id="upload-delete-task">
         <div class="row right-align">
         <span class="btn btn-file light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
           Subir ejericicio
@@ -113,4 +158,21 @@
 
     </div>
   </div>
+
+<!--  <div class="row">-->
+<!--    <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="row right-align">-->
+<!--      <button class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">-->
+<!--        Crear Tarea Colab-->
+<!--        <i class="fas fa-code left"></i>-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--    <div class="row animate__animated animate__fadeIn animate__fast">-->
+<!--      <div class="input-field col s12">-->
+<!--        <input [(ngModel)]="section.colabAssignmentUrl" id="colab-url" type="text" class="validate">-->
+<!--        <label for="colab-url">Url de colab</label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    -->
+<!--  </div>-->
 </div>

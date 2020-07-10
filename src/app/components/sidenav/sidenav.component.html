@@ -16,7 +16,22 @@
     class="sidenav sidenav-fixed animate__animated animate__fadeIn animate__fast">
   <li [ngClass]="{'active': i === selectedSection}"
       *ngFor="let section of sections; let i = index">
-    <a class="waves-effect" (click)="emitSection(i)">{{section.sectionName}}</a>
+    <a style="padding: 0 5px!important;" class="waves-effect" (click)="emitSection(i)">
+      {{section.sectionName}}
+      <!-- Icons -->
+      <i *ngIf="!section.evaluable && !section.videoId"
+         class="material-icons"
+         style="margin-right: 10px">article</i>
+      <i *ngIf="!section.evaluable && section.videoId"
+         class="material-icons"
+         style="margin-right: 10px">play_arrow</i>
+      <i *ngIf="section.evaluable && isSectionFinished(section.uid)"
+         class="material-icons"
+         style="color: #00a05b; margin-right: 10px;">check_circle</i>
+      <i *ngIf="section.evaluable && !isSectionFinished(section.uid)"
+         class="material-icons"
+         style="margin-right: 10px;">code</i>
+    </a>
     <div class="divider"></div>
   </li>
 </ul>

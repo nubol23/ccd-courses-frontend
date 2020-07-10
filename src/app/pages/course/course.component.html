@@ -6,7 +6,8 @@
              class="animate__animated animate__fadeIn animate__fast"></app-sidenav>
 
 <div class="row animate__animated animate__fadeIn animate__fast">
-  <div *ngIf="authService.signedIn" class="col left-align" style="margin-top: 30px;">
+<!--  <div *ngIf="authService.signedIn" class="col left-align" style="margin-top: 30px;">-->
+  <div *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" class="col left-align" style="margin-top: 30px;">
     <button *ngIf="!onNavbarEdit && sections.length > 1"
             (click)="startNavbarEdit()"
             class="waves-effect waves-light btn light-blue lighten-2 animate__animated animate__fadeIn animate__faster">
@@ -17,7 +18,8 @@
       <i class="fas fa-save"></i>
     </button>
   </div>
-  <div class="col right" *ngIf="authService.signedIn" style="margin-top: 30px">
+<!--  <div class="col right" *ngIf="authService.signedIn" style="margin-top: 30px">-->
+  <div class="col right" *ngIf="authService.loggedUser.signedIn && authService.loggedUser.role=='admin'" style="margin-top: 30px">
     <button (click)="addSection()" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
       Agregar sección
       <i class="fa fa-plus left"></i>

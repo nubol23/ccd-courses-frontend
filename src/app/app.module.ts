@@ -23,6 +23,7 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
 import {HttpClientModule} from "@angular/common/http";
 import {MonacoEditorModule} from "ngx-monaco-editor";
 import { ListformatPipe } from './pipes/listformat.pipe';
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ListformatPipe } from './pipes/listformat.pipe';
     AngularFireAuthModule,
     HttpClientModule,
     MonacoEditorModule.forRoot(),
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
