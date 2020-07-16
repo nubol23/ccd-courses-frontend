@@ -122,8 +122,9 @@ export class CourseSectionComponent implements OnInit, AfterViewChecked {
     Swal.fire({
       title: `¿Está seguro/a que desea borrar el ejercicio?`,
       icon: 'warning',
-      confirmButtonText: 'OK',
+      confirmButtonText: 'SI',
       showCancelButton: true,
+      cancelButtonText: "NO",
       confirmButtonColor: '#00ce89',
       cancelButtonColor: '#EF5350'
     }).then((result) => {

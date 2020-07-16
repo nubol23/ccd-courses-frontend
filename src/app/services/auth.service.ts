@@ -83,6 +83,10 @@ export class AuthService {
     return auth().currentUser.getIdToken(true);
   }
 
+  resetPassword(email: string) {
+    return auth().sendPasswordResetEmail(email);
+  }
+
   // saveToken(idToken: string) {
   //   this.userToken = idToken;
   //   localStorage.setItem('token', idToken);

@@ -15,14 +15,14 @@
         suggestedQuality="highres">
       </youtube-player>
     </div>
-    <br>
+
     <div class="row left-align animate__animated animate__fadeIn animate__fast" *ngIf="!section.videoId && section.liveUrl" id="livestream-container">
       <a [href]="section.liveUrl" target="_blank" class="waves-effect waves-light btn custom-secondary lighten-1 animate__animated animate__fadeIn animate__faster">
         Livestream
         <i class="fas fa-play left"></i>
       </a>
     </div>
-    <br>
+
     <div class="row left-align animate__animated animate__fadeIn animate__fast"
          *ngIf="section.colabAssignmentUrl && authService.loggedUser.signedIn"
          id="colab-url-container">

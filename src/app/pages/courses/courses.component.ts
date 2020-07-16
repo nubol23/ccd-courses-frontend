@@ -38,8 +38,9 @@ export class CoursesComponent implements OnInit {
     Swal.fire({
       title: `¿Está seguro/a que desea borrar el curso?`,
       icon: 'warning',
-      confirmButtonText: 'OK',
+      confirmButtonText: 'SI',
       showCancelButton: true,
+      cancelButtonText: "NO",
       confirmButtonColor: '#00ce89',
       cancelButtonColor: '#EF5350'
     }).then((result) => {

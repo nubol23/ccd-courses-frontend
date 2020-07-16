@@ -23,8 +23,9 @@ export class NavbarComponent implements OnInit {
     Swal.fire({
       title: `¿Desea cerrar sesión?`,
       icon: 'warning',
-      confirmButtonText: 'OK',
+      confirmButtonText: 'SI',
       showCancelButton: true,
+      cancelButtonText: "NO",
       confirmButtonColor: '#00ce89',
       cancelButtonColor: '#EF5350'
     }).then((result) => {

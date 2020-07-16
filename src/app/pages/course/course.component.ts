@@ -115,29 +115,41 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   deleteSection(sectionIdx) {
     Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor'
+      title: `¿Desea eliminar la sección?`,
+      icon: 'warning',
+      confirmButtonText: 'SI',
+      showCancelButton: true,
+      cancelButtonText: "NO",
+      confirmButtonColor: '#00ce89',
+      cancelButtonColor: '#EF5350'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+
+        if (sectionIdx == this.sections.length - 1) {
+          // Goto next element
+          // this.currentSectionIdx = 0;
+
+          this.navSideSharedService.selectedSection = 0;
+        } else {
+          // Got to start if at end
+          // this.currentSectionIdx = sectionIdx;
+
+          this.navSideSharedService.selectedSection = sectionIdx;
+        }
+        // Delete the section
+        this.courseContentService.deleteSection(this.sections[sectionIdx].uid)
+          .then(resp => {
+            this.responseDialog(resp);
+          })
+      }
     });
-    Swal.showLoading();
 
-    if (sectionIdx == this.sections.length-1) {
-      // Goto next element
-      // this.currentSectionIdx = 0;
-
-      this.navSideSharedService.selectedSection = 0;
-    }
-    else {
-      // Got to start if at end
-      // this.currentSectionIdx = sectionIdx;
-
-      this.navSideSharedService.selectedSection = sectionIdx;
-    }
-    // Delete the section
-    this.courseContentService.deleteSection(this.sections[sectionIdx].uid)
-      .then(resp => {
-        this.responseDialog(resp);
-      })
   }
 
   startNavbarEdit() {

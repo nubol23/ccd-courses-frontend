@@ -64,4 +64,47 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  recoverPassword() {
+
+    if (this.email != ''){
+      Swal.fire({
+        title: `¿Desea recuperar su contraseña?`,
+        icon: 'warning',
+        confirmButtonText: 'SI',
+        showCancelButton: true,
+        cancelButtonText: "NO",
+        confirmButtonColor: '#00ce89',
+        cancelButtonColor: '#EF5350'
+      }).then((result) => {
+        if (result.value) {
+          Swal.fire({
+            allowOutsideClick: false,
+            icon: 'info',
+            text: 'Espere por favor'
+          });
+          Swal.showLoading();
+
+          this.auth.resetPassword(this.email)
+            .then(res => {
+              Swal.fire({
+                allowOutsideClick: false,
+                icon: 'success',
+                title: 'Mail enviado',
+                text: 'Revise su bandeja de entrada o spam para seguir las instrucciones de recuperación'
+              });
+            })
+            .catch(err => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La dirección de correo no existe'
+              });
+            })
+        }
+      });
+
+    }
+
+  }
+
 }
