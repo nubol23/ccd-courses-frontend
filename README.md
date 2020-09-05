@@ -29,3 +29,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Deploy to firebase hosting
 
 firebase deploy --only hosting:ccd-simple 
+
+## Hotfix sidenav
+in
+> ccd-courses-frontend/src/assets/materialize-src/sass/components/_sidenav.scss
+
+commented line 9
+```css
+height: calc(100% + 60px);
+```
